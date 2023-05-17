@@ -48,3 +48,17 @@ square
 
 (trace plus-another)
 (plus-another 3 4)
+
+(define fib
+  (lambda (n)
+    (cond
+      ((< n 2) n)
+      (else (+ (fib (- n 1)) (fib (- n 2)))))))
+(trace fib)
+(fib 4)
+
+(define hanoi
+  (lambda (n f t s)
+    (cond
+      ((= n 0) (printf "done~n"))
+      (else (hanoi (- n 1) f s t) (printf "~a from ~a to ~a.~n" n f t) (hanoi (- n 1) s t f)))))
