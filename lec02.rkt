@@ -35,3 +35,64 @@
       (lambda (a)
         (+ 1 a)))
     (sum-general identity a plus1 b)))
+
+(define another-sum-square
+  (lambda (a b)
+    (define plus1
+      (lambda (x)
+        (+ 1 x)))
+    (sum-general square a plus1 b)))
+
+;;(sum-square 1 100)
+;;(another-sum-square 1 100)
+
+(define another-pi-sum
+  (lambda (a b)
+    (sum-general (lambda (i) (/ 1 (* i (+ i 2)))) a (lambda (i) (+ 4 i)) b)))
+;;(pi-sum 1 100)
+;;(another-pi-sum 1 100)
+
+(define another-another-sum-int
+  (lambda (a b)
+    (sum-general (lambda (i) i) a (lambda (i) (+ 1 i)) b)))
+ 
+;;(sum-int 1 1000)
+;;(another-sum-int 1 1000)
+;;(another-another-sum-int 1 1000)
+
+(define another-another-sum-square
+  (lambda (a b)
+    (sum-general (lambda (i) (* i i)) a (lambda (i) (+ 1 i)) b)))
+
+;;(sum-square 1 1000)
+;;(another-sum-square 1 1000)
+;;(another-another-sum-square 1 1000)
+
+
+;;square root
+(define fixed-point
+  (lambda (f start)
+    (define tolerance 0.00001)
+    (define close-enuf?
+      (lambda (u v)
+        (< (abs (- u v)) tolerance)))
+    (define iter
+      (lambda (old new)
+        (cond
+          ((close-enuf? old new) new)
+          (else (iter new (f new))))))
+    (iter start (f start))))
+
+(define sqrt-f
+  (lambda (x)
+    (fixed-point
+     (lambda (y) (/ (+ (/ x y) y) 2)) 1)))
+(trace sqrt-f)
+
+(define sqrt-f1
+  (lambda (x)
+    (define avg-damp
+      (lambda (f)
+        (lambda (x) (/ (+ (f x) x) 2))))
+    (fixed-point
+     (avg-damp (lambda (y) (/ x y))) 1)))
