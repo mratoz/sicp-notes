@@ -96,3 +96,20 @@
         (lambda (x) (/ (+ (f x) x) 2))))
     (fixed-point
      (avg-damp (lambda (y) (/ x y))) 1)))
+
+;;square root in newton's method
+(define sqrt-n
+  (lambda (x)
+    (newton (lambda (y) (- x (square y))) 1)))
+
+(define newton
+  (lambda (f guess)
+    (define df
+      (deriv f))
+    (fixed-point (lambda (x) (- x (/ (f x) (df x)))) guess)))
+
+(define deriv
+  (lambda (f)
+    (lambda (x)
+      (/ (- (f (+ x dx)) (f x)) dx))))
+(define dx 0.00001)
