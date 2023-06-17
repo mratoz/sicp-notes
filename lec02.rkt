@@ -113,3 +113,33 @@
     (lambda (x)
       (/ (- (f (+ x dx)) (f x)) dx))))
 (define dx 0.00001)
+
+;;compound data
+(define make-rat
+  (lambda (n d)
+    (let ([g (gcd n d)])
+    (cons (/ n g) (cons (/ d g) '())))))
+(define number
+  (lambda (rat)
+    (car rat)))
+(define denom
+  (lambda (rat)
+    (car (cdr rat))))
+
+(define +rat
+  (lambda (x y)
+  (make-rat
+    (+ (* (number x) (denom y))
+       (* (number y) (denom x)))
+    (* (denom x) (denom y)))))
+
+(define *rat
+  (lambda (x y)
+    (make-rat
+      (* (number x) (number y))
+      (* (denom x) (denom y)))))
+
+;;(define a (make-rat 1 2))
+;;(define b (make-rat 3 4))
+;;(+rat a b)
+;;(*rat a b)
