@@ -143,3 +143,60 @@
 ;;(define b (make-rat 3 4))
 ;;(+rat a b)
 ;;(*rat a b)
+
+(define make-rat-v2
+  (lambda (n d)
+    (cons n (cons d '()))))
+(define number-v2
+  (lambda (rat)
+    (let ([g (gcd (car rat) (car (cdr rat)))])
+      (/ (car rat) g))))
+(define denom-v2
+  (lambda (rat)
+    (let ([g (gcd (car rat) (car (cdr rat)))])
+      (/ (car (car rat)) g))))
+
+;;(define a-v2 (make-rat-v2 1 2))
+;;(define b-v2 (make-rat-v2 6 8))
+;;(number-v2 a-v2)
+;;(number-v2 b-v2)
+;;(number b-v2)
+
+
+;;lec2b: vector
+(define make-vector
+  (lambda (x y)
+    (cons x (cons y '()))))
+(define xcor
+  (lambda (p)
+    (car p)))
+(define ycor
+  (lambda (p)
+    (car (cdr p))))
+
+(define make-seg
+  (lambda (p q)
+    (cons p (cons q '()))))
+(define seg-start
+  (lambda (s)
+    (car s)))
+(define seg-end
+  (lambda (s)
+    (car (cdr s))))
+
+(define mid-point
+  (lambda (s)
+    (let ([a (seg-start s)] [b (seg-end s)])
+      (make-vector (average (xcor a) (xcor b)) (average (ycor a) (ycor b))))))
+
+(define length
+  (lambda (s)
+    (let ([dx (- (xcor (seg-end s)) (xcor (seg-start s)))]
+          [dy (- (ycor (seg-end s)) (ycor (seg-start s)))])
+      (sqrt (+ (square dx) (square dy))))))
+
+(define a (make-vector 1 2))
+(define b (make-vector 5 6))
+(define seg-a-b (make-seg a b))
+(mid-point seg-a-b)
+(length seg-a-b)
