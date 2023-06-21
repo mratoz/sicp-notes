@@ -200,3 +200,17 @@
 (define seg-a-b (make-seg a b))
 (mid-point seg-a-b)
 (length seg-a-b)
+
+(define special-cons
+  (lambda (a b)
+    (lambda (pick)
+      (cond
+        ((= pick 1) a)
+        ((= pick 2) b)
+        (else '())))))
+(define special-car
+  (lambda (x)
+    (x 1)))
+(define special-cdr
+  (lambda (x)
+    (x 2)))
