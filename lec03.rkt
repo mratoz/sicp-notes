@@ -39,3 +39,30 @@
     (cond
       ((null? l) '())
       (else (cons (* s (car l)) (scale-list s (cdr l)))))))
+
+(scale-list 10 1-to-4)
+
+;;general pattern of map
+(define map
+  (lambda (p l)
+    (cond
+      ((null? l) '())
+      (else (cons (p (car l)) (map p (cdr l)))))))
+
+(define scale-list-via-map
+  (lambda (s l)
+    (map (lambda (i) (* s i)) l)))
+
+(scale-list-via-map 10 1-to-4)
+
+(map (lambda (i) (+ 10 i)) 1-to-4)
+
+(define filter
+  (lambda (f l)
+    (cond
+      ((null? l) '())
+      ((equal? (f (car l)) #t) (cons (car l) (filter f (cdr l))))
+      (else (filter f (cdr l))))))
+
+(filter (lambda (i) (> i 3)) 1-to-4)
+(filter (lambda (i) (> i 3)) (map (lambda (i) (+ 10 i)) 1-to-4))
