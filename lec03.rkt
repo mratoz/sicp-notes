@@ -1,6 +1,7 @@
 #lang racket
 (require "base.rkt")
 (require racket/trace)
+(require racket/draw)
 
 (define +vect
   (lambda (v1 v2)
@@ -66,3 +67,79 @@
 
 (filter (lambda (i) (> i 3)) 1-to-4)
 (filter (lambda (i) (> i 3)) (map (lambda (i) (+ 10 i)) 1-to-4))
+
+
+;;Square Limit
+(define make-rect
+  (lambda (origin h v)
+    (cons origin (cons h (cons v '())))))
+
+(define horiz
+  (lambda (rect)
+    (car (cdr rect))))
+
+(define vert
+  (lambda (rect)
+    (car (cdr (cdr rect)))))
+
+(define origin
+  (lambda (rect)
+    (car rect)))
+
+(define coord-map
+  (lambda (rect)
+    (lambda (point)
+      (+vect
+       (+vect (scale (xcor point) (horiz rect))
+              (scale (ycor point) (vert rect)))
+       (origin rect)))))
+
+(define make-picture
+  (lambda (seglist)
+    (lambda (rect)
+      (for-each
+       (lambda (s)
+         (draw-line ; TODO: to implement in the future
+          ((coord-map rect) (seg-start s))
+          ((coord-map rect) (seg-end s))))
+       seglist))))
+
+(define beside
+  (lambda (p1 p2 a)
+    (lambda (rect)
+      (p1 (make-rect
+           (origin rect)
+           (scale a (horiz rect))
+           (vert rect)))
+      (p2 (make-rect
+           (+vect (origin rect)
+                  (scale a (horiz rect)))
+           (scale (- 1 a) (horiz rect))
+           (vert rect))))))
+
+(define right-push
+  (lambda (p n a)
+    (cond
+      ((= n 0) p)
+      (else (beside p (right-push p (- n 1) a) a)))))
+
+(define push
+  (lambda (comb)
+    (lambda (pict n a)
+      (
+       (repeated
+        (lambda (p)
+          (comb pict p a))
+        n)
+       pict))))
+
+(define another-right-push (push beside))
+
+(define rotate90
+  (lambda (pict)
+    (lambda (rect)
+      (pict (make-rect
+             (+vect (origin rect)
+                    (horiz rect))
+             (vert rect)
+             (scale -1 (horiz rect)))))))
