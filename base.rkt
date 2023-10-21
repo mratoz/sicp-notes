@@ -41,3 +41,11 @@
     (let ([dx (- (xcor (seg-end s)) (xcor (seg-start s)))]
           [dy (- (ycor (seg-end s)) (ycor (seg-start s)))])
       (sqrt (+ (square dx) (square dy))))))
+
+(define dx 0.00001)
+(define deriv
+  (lambda (f)
+    (lambda (x)
+      (/ (- (f (+ x dx))
+            (f x))
+         dx))))
