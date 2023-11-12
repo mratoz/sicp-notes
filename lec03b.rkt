@@ -57,7 +57,16 @@
 
 (define make-product
   (lambda (m1 m2)
-    (list `* m1 m2)))
+    (cond
+      ((and (number? m1)
+            (number? m2))
+       (* m1 m2))
+      ((eq? m1 1) m2)
+      ((eq? m2 1) m1)
+      ((or (eq? m1 0) (eq? m2 0)) 0)
+      (else (list `* m1 m2)))))
+    
+;;    (list `* m1 m2)))
 
 (define M1 cadr)
 (define M2 caddr)
