@@ -1,6 +1,7 @@
 #lang racket
 (provide square average)
 (provide make-vector xcor ycor)
+(provide atom?)
 
 (define square
   (lambda (x)
@@ -49,3 +50,8 @@
       (/ (- (f (+ x dx))
             (f x))
          dx))))
+
+(define atom?
+  (lambda (x)
+    (and (not (pair? x))
+         (not (null? x)))))
