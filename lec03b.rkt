@@ -34,7 +34,18 @@
 
 (define make-sum
   (lambda (a1 a2)
-    (list `+ a1 a2)))
+    (cond
+      ((and (number? a1)
+            (number? a2))
+       (+ a1 a2))
+      ((and (number? a1)
+            (eq? a1 0))
+       a2)
+      ((and (number? a2)
+            (eq? a2 0))
+       a1)
+      (else (list `+ a1 a2)))))
+;;    (list `+ a1 a2)))
 
 (define A1 cadr)
 (define A2 caddr)
